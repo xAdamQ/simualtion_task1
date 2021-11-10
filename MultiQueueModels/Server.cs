@@ -12,24 +12,21 @@ namespace MultiQueueModels
         public Server()
         {
             this.TimeDistribution = new List<TimeDistribution>();
-            ID = lastId++;
+            ID = ++lastId;
         }
 
         public int ID { get; set; }
         public decimal IdleProbability { get; set; }
-        public decimal AverageServiceTime { get; set; } 
+        public decimal AverageServiceTime { get; set; }
         public decimal Utilization { get; set; }
 
         public List<TimeDistribution> TimeDistribution;
 
-        public bool isIdle;
         public int serviceTime;
 
-        public void serve()
-        {
-            
-        }
-        
+        public int timeServiceEnd;
+
+
         //optional if needed use them
         public int FinishTime { get; set; }
         public int TotalWorkingTime { get; set; }

@@ -10,9 +10,6 @@ namespace MultiQueueModels
 {
     public class SimulationSystem
     {
-        private int customerN, time;
-        private int customerQueue;
-
         public SimulationSystem()
         {
             this.Servers = new List<Server>();
@@ -21,67 +18,98 @@ namespace MultiQueueModels
             this.SimulationTable = new List<SimulationCase>();
         }
 
-        
-        
-        void simulate()
+        public void simulate()
         {
-            SetCummProp(InterarrivalDistribution);
+            setCummProp(InterarrivalDistribution);
             foreach (var server in Servers)
-                SetCummProp(server.TimeDistribution);
+                setCummProp(server.TimeDistribution);
+
+            var customerN = 0;
+            var time = 0;
 
             while (!shouldStop())
             {
-                var enterArrivalTime = GetRandomTime(InterarrivalDistribution);
-                arrival();
-                
-            }
-        }
+                var sCase = new SimulationCase();
+                SimulationTable.Add(sCase);
 
-        void arrival()
-        {
-            var chosenServer = Servers[0].isIdle ? Servers[0] : Servers[1];
-            if (!chosenServer.isIdle)
+                sCase.CustomerNumber = customerN++;
+                var prop = 0;
+                sCase.InterArrival = customerN==1?0: getRandomTime(InterarrivalDistribution, out prop);
+                sCase.RandomInterArrival =customerN==1?1: prop;
+
+                time += sCase.InterArrival;
+
+                sCase.ArrivalTime = time;
+
+                var chosenServer = getServer();
+                if (chosenServer.timeServiceEnd > time)
+                {
+                    sCase.TimeInQueue = chosenServer.timeServiceEnd - time;
+                }
+
+
+                sCase.ServiceTime = getRandomTime(chosenServer.TimeDistribution, out int prop2);
+                sCase.AssignedServer = chosenServer;
+                sCase.RandomService = prop2;
+
+                chosenServer.timeServiceEnd += time + sCase.TimeInQueue+ sCase.ServiceTime;
+
+                sCase.StartTime = time + sCase.TimeInQueue;
+                sCase.EndTime = chosenServer.timeServiceEnd;
+            }
+
+            bool shouldStop()
             {
-                customerQueue++;
-                return;
+                if (StoppingCriteria == Enums.StoppingCriteria.NumberOfCustomers)
+                    return customerN >= StoppingNumber;
+                else
+                    return time >= StoppingNumber;
             }
-            var serviceTime = GetRandomTime(chosenServer.TimeDistribution);
 
-            chosenServer.serviceTime += serviceTime;
-        }
-        void depature()
-        {
-            
+            Server getServer()
+            {
+                switch (SelectionMethod)
+                {
+                    case Enums.SelectionMethod.HighestPriority:
+                        var freeServers = Servers.Where(s => s.timeServiceEnd <= time).ToList();
+                        if (freeServers.Count != 0) return freeServers.OrderBy(s => s.ID).First();
+                        return Servers.OrderBy(s => s.timeServiceEnd).First();
+                    case Enums.SelectionMethod.Random:
+                        throw new NotImplementedException();
+                    case Enums.SelectionMethod.LeastUtilization:
+                        throw new NotImplementedException();
+                    default:
+                        throw new ArgumentOutOfRangeException();
+                }
+            }
         }
 
-        bool shouldStop()
-        {
-            if (StoppingCriteria == Enums.StoppingCriteria.NumberOfCustomers)
-                return customerN >= StoppingNumber;
-            else
-                return time >= StoppingNumber;
-        }
 
-        public void SetCummProp(List<TimeDistribution> timeDistributions)
+        private void setCummProp(List<TimeDistribution> timeDistributions)
         {
             decimal cummProp = 0;
-            for (int i = 0; i < timeDistributions.Count; i++)
+            foreach (var t in timeDistributions)
             {
-                cummProp += timeDistributions[i].Probability;
-                timeDistributions[i].CummProbability = cummProp;
+                cummProp += t.Probability;
+                t.CummProbability = cummProp;
             }
         }
 
-        private Random rand;
-        public int GetRandomTime(List<TimeDistribution> timeDistributions)
+        private Random rand = new Random();
+        private int getRandomTime(List<TimeDistribution> timeDistributions, out int prop)
         {
-            var prop = rand.NextDouble();
+            prop = GetRandomNumber();
             for (int i = 0; i < timeDistributions.Count; i++)
             {
-                if (timeDistributions[i].CummProbability <= (decimal) prop)
+                if (prop<=timeDistributions[i].CummProbability*100)
                     return timeDistributions[i].Time;
             }
             throw new Exception("time dist is wrong");
+        }
+
+        public int GetRandomNumber()
+        {
+            return rand.Next(1, 101);
         }
 
         ///////////// INPUTS ///////////// 
@@ -95,6 +123,5 @@ namespace MultiQueueModels
         ///////////// OUTPUTS /////////////
         public List<SimulationCase> SimulationTable { get; set; }
         public PerformanceMeasures PerformanceMeasures { get; set; }
-
     }
 }

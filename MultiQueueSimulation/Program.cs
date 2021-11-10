@@ -17,15 +17,17 @@ namespace MultiQueueSimulation
         [STAThread]
         static void Main()
         {
-            SimulationSystem system = new SimulationSystem();
+            var system = new SimulationSystem();
 
             var testCaseText = File.ReadAllText(@"../../TestCases/TestCase1.txt");
-            var testCaseLines = testCaseText.Split(new string[] {Environment.NewLine}, StringSplitOptions.None).Select(s => s.Replace("\r", "")).ToArray();
+            var testCaseLines = testCaseText.Split(new string[] {Environment.NewLine}, StringSplitOptions.None)
+                .Select(s => s.Replace("\r", "")).ToArray();
             system.NumberOfServers = int.Parse(testCaseLines[Array.IndexOf(testCaseLines, "NumberOfServers") + 1]);
             system.StoppingNumber = int.Parse(testCaseLines[Array.IndexOf(testCaseLines, "StoppingNumber") + 1]);
-            system.StoppingCriteria = (Enums.StoppingCriteria)int.Parse(testCaseLines[Array.IndexOf(testCaseLines, "StoppingCriteria") + 1]);
-            system.SelectionMethod = (Enums.SelectionMethod)int.Parse(testCaseLines[Array.IndexOf(testCaseLines, "SelectionMethod") + 1]);
-            var counter = Array.IndexOf(testCaseLines, "InterarrivalDistribution")+1;
+            system.StoppingCriteria =
+                (Enums.StoppingCriteria) int.Parse(testCaseLines[Array.IndexOf(testCaseLines, "StoppingCriteria") + 1]);
+            system.SelectionMethod = (Enums.SelectionMethod) int.Parse(testCaseLines[Array.IndexOf(testCaseLines, "SelectionMethod") + 1]);
+            var counter = Array.IndexOf(testCaseLines, "InterarrivalDistribution") + 1;
             while (!string.IsNullOrWhiteSpace(testCaseLines[counter]))
             {
                 var vals = testCaseLines[counter].Split(',');
@@ -62,12 +64,14 @@ namespace MultiQueueSimulation
                 counter++;
             }
 
-            string result = TestingManager.Test(system, Constants.FileNames.TestCase1);
-            MessageBox.Show(result);
-            Application.EnableVisualStyles();
-            Application.SetCompatibleTextRenderingDefault(false);
-            Application.Run(new Form1());
+            system.simulate();
 
+            string result = TestingManager.Test(system, Constants.FileNames.TestCase1);
+            Console.WriteLine(result);
+            MessageBox.Show(result);
+            //Application.EnableVisualStyles();
+            //Application.SetCompatibleTextRenderingDefault(false);
+            //Application.Run(new Form1());
         }
     }
 }

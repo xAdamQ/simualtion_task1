@@ -97,3 +97,16 @@ F:/GoogleDriveSync/[2019-2020] Simulation/[2019-2020] Labs/Lab 2/Template_Studen
 /Users/adam/Downloads/MultiQueueSimulation/MultiQueueSimulation/obj/Debug/MultiQueueSimulation.csproj.CopyComplete
 /Users/adam/Downloads/MultiQueueSimulation/MultiQueueSimulation/obj/Debug/MultiQueueSimulation.exe
 /Users/adam/Downloads/MultiQueueSimulation/MultiQueueSimulation/obj/Debug/MultiQueueSimulation.pdb
+Z:\Downloads\MultiQueueSimulation\MultiQueueSimulation\obj\Debug\MultiQueueSimulation.Form1.resources
+Z:\Downloads\MultiQueueSimulation\MultiQueueSimulation\obj\Debug\MultiQueueSimulation.Properties.Resources.resources
+Z:\Downloads\MultiQueueSimulation\MultiQueueSimulation\obj\Debug\MultiQueueSimulation.csproj.GenerateResource.Cache
+Z:\Downloads\MultiQueueSimulation\MultiQueueSimulation\bin\Debug\MultiQueueSimulation.exe.config
+Z:\Downloads\MultiQueueSimulation\MultiQueueSimulation\bin\Debug\MultiQueueSimulation.exe
+Z:\Downloads\MultiQueueSimulation\MultiQueueSimulation\bin\Debug\MultiQueueSimulation.pdb
+Z:\Downloads\MultiQueueSimulation\MultiQueueSimulation\bin\Debug\MultiQueueModels.dll
+Z:\Downloads\MultiQueueSimulation\MultiQueueSimulation\bin\Debug\MultiQueueModels.pdb
+Z:\Downloads\MultiQueueSimulation\MultiQueueSimulation\obj\Debug\MultiQueueSimulation.csproj.AssemblyReference.cache
+Z:\Downloads\MultiQueueSimulation\MultiQueueSimulation\obj\Debug\MultiQueueSimulation.csproj.CoreCompileInputs.cache
+Z:\Downloads\MultiQueueSimulation\MultiQueueSimulation\obj\Debug\MultiQueueSimulation.csproj.CopyComplete
+Z:\Downloads\MultiQueueSimulation\MultiQueueSimulation\obj\Debug\MultiQueueSimulation.exe
+Z:\Downloads\MultiQueueSimulation\MultiQueueSimulation\obj\Debug\MultiQueueSimulation.pdb
