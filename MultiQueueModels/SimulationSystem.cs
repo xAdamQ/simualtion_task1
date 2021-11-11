@@ -25,10 +25,13 @@ namespace MultiQueueModels
                 setCummProp(server.TimeDistribution);
 
             var customerN = 0;
-            var time = 0;
+            var clock = 0;
 
             while (!shouldStop())
             {
+                if(customerN == 5)
+                { 
+                }
                 var sCase = new SimulationCase();
                 SimulationTable.Add(sCase);
 
@@ -37,25 +40,24 @@ namespace MultiQueueModels
                 sCase.InterArrival = customerN==1?0: getRandomTime(InterarrivalDistribution, out prop);
                 sCase.RandomInterArrival =customerN==1?1: prop;
 
-                time += sCase.InterArrival;
-
-                sCase.ArrivalTime = time;
+                clock += sCase.InterArrival;
+                
+                sCase.ArrivalTime = clock;
 
                 var chosenServer = getServer();
-                if (chosenServer.timeServiceEnd > time)
+                if (chosenServer.FinishTime > clock)
                 {
-                    sCase.TimeInQueue = chosenServer.timeServiceEnd - time;
+                    sCase.TimeInQueue = chosenServer.FinishTime - clock;
                 }
-
 
                 sCase.ServiceTime = getRandomTime(chosenServer.TimeDistribution, out int prop2);
                 sCase.AssignedServer = chosenServer;
                 sCase.RandomService = prop2;
 
-                chosenServer.timeServiceEnd += time + sCase.TimeInQueue+ sCase.ServiceTime;
+                sCase.StartTime = sCase.TimeInQueue ==0? clock:chosenServer.FinishTime;
+                sCase.EndTime = sCase.StartTime + sCase.ServiceTime;
 
-                sCase.StartTime = time + sCase.TimeInQueue;
-                sCase.EndTime = chosenServer.timeServiceEnd;
+                chosenServer.FinishTime += sCase.EndTime;
             }
 
             bool shouldStop()
@@ -63,7 +65,7 @@ namespace MultiQueueModels
                 if (StoppingCriteria == Enums.StoppingCriteria.NumberOfCustomers)
                     return customerN >= StoppingNumber;
                 else
-                    return time >= StoppingNumber;
+                    return clock >= StoppingNumber;
             }
 
             Server getServer()
@@ -71,11 +73,11 @@ namespace MultiQueueModels
                 switch (SelectionMethod)
                 {
                     case Enums.SelectionMethod.HighestPriority:
-                        var freeServers = Servers.Where(s => s.timeServiceEnd <= time).ToList();
+                        var freeServers = Servers.Where(s => s.FinishTime <= clock).ToList();
                         if (freeServers.Count != 0) return freeServers.OrderBy(s => s.ID).First();
-                        return Servers.OrderBy(s => s.timeServiceEnd).First();
+                        return Servers.OrderBy(s => s.FinishTime).First();
                     case Enums.SelectionMethod.Random:
-                        throw new NotImplementedException();
+                        return Servers[new Random().Next(Servers.Count)];
                     case Enums.SelectionMethod.LeastUtilization:
                         throw new NotImplementedException();
                     default:

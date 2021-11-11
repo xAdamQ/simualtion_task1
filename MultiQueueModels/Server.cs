@@ -24,7 +24,6 @@ namespace MultiQueueModels
 
         public int serviceTime;
 
-        public int timeServiceEnd;
 
 
         //optional if needed use them

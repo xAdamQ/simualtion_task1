@@ -46,3 +46,9 @@ Z:\Downloads\MultiQueueSimulation\MultiQueueModels\obj\Debug\MultiQueueModels.cs
 Z:\Downloads\MultiQueueSimulation\MultiQueueModels\obj\Debug\MultiQueueModels.csproj.CoreCompileInputs.cache
 Z:\Downloads\MultiQueueSimulation\MultiQueueModels\obj\Debug\MultiQueueModels.dll
 Z:\Downloads\MultiQueueSimulation\MultiQueueModels\obj\Debug\MultiQueueModels.pdb
+C:\Users\adam\projects\simualtion_task1\MultiQueueModels\bin\Debug\MultiQueueModels.dll
+C:\Users\adam\projects\simualtion_task1\MultiQueueModels\bin\Debug\MultiQueueModels.pdb
+C:\Users\adam\projects\simualtion_task1\MultiQueueModels\obj\Debug\MultiQueueModels.csproj.AssemblyReference.cache
+C:\Users\adam\projects\simualtion_task1\MultiQueueModels\obj\Debug\MultiQueueModels.csproj.CoreCompileInputs.cache
+C:\Users\adam\projects\simualtion_task1\MultiQueueModels\obj\Debug\MultiQueueModels.dll
+C:\Users\adam\projects\simualtion_task1\MultiQueueModels\obj\Debug\MultiQueueModels.pdb
