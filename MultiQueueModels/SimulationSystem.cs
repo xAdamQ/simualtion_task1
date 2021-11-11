@@ -62,9 +62,9 @@ namespace MultiQueueModels
                 if (sCase.TimeInQueue != 0)
                     chosenServer.currentQ.Add(chosenServer.FinishTime);
 
-                chosenServer.currentQ.RemoveAll(t => t <= clock);
-
-                maxQ = Math.Max(maxQ, Servers.Max(s => s.currentQ.Count));
+                Servers.ForEach(s => s.currentQ.RemoveAll(t => t <= clock));
+                //maxQ =Math.Max(maxQ,Servers.Sum(s => s.currentQ.Count));
+                maxQ = Math.Max(maxQ, chosenServer.currentQ.Count);
             }
 
             bool shouldStop()
