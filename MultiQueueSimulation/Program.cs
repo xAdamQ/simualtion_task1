@@ -67,11 +67,10 @@ namespace MultiQueueSimulation
             system.simulate();
 
             string result = TestingManager.Test(system, Constants.FileNames.TestCase1);
-            Console.WriteLine(result);
             MessageBox.Show(result);
-            //Application.EnableVisualStyles();
-            //Application.SetCompatibleTextRenderingDefault(false);
-            //Application.Run(new Form1());
+            Application.EnableVisualStyles();
+            Application.SetCompatibleTextRenderingDefault(false);
+            Application.Run(new Form1(system));
         }
     }
 }

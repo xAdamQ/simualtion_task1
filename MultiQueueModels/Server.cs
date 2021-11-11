@@ -24,7 +24,9 @@ namespace MultiQueueModels
 
         public int serviceTime;
 
+        public List<int> currentQ = new List<int>();
 
+        public int servedCustomers;
 
         //optional if needed use them
         public int FinishTime { get; set; }

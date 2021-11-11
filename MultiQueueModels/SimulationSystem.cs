@@ -26,12 +26,10 @@ namespace MultiQueueModels
 
             var customerN = 0;
             var clock = 0;
+            var maxQ = 0;
 
             while (!shouldStop())
             {
-                if(customerN == 5)
-                { 
-                }
                 var sCase = new SimulationCase();
                 SimulationTable.Add(sCase);
 
@@ -57,7 +55,16 @@ namespace MultiQueueModels
                 sCase.StartTime = sCase.TimeInQueue ==0? clock:chosenServer.FinishTime;
                 sCase.EndTime = sCase.StartTime + sCase.ServiceTime;
 
-                chosenServer.FinishTime += sCase.EndTime;
+                chosenServer.FinishTime = sCase.EndTime;
+                chosenServer.TotalWorkingTime += sCase.ServiceTime;
+                chosenServer.servedCustomers++;
+
+                if (sCase.TimeInQueue != 0)
+                    chosenServer.currentQ.Add(chosenServer.FinishTime);
+
+                chosenServer.currentQ.RemoveAll(t => t <= clock);
+
+                maxQ = Math.Max(maxQ, Servers.Max(s => s.currentQ.Count));
             }
 
             bool shouldStop()
@@ -84,6 +91,18 @@ namespace MultiQueueModels
                         throw new ArgumentOutOfRangeException();
                 }
             }
+
+            PerformanceMeasures.AverageWaitingTime = SimulationTable.Sum(r => r.TimeInQueue) / (decimal)SimulationTable.Count;
+            PerformanceMeasures.MaxQueueLength = maxQ;
+            PerformanceMeasures.WaitingProbability = SimulationTable.Count(r => r.TimeInQueue != 0) / (decimal)SimulationTable.Count;
+
+            foreach (var server in Servers)
+            {
+                server.Utilization = server.TotalWorkingTime / (decimal)clock;
+                server.AverageServiceTime = server.TotalWorkingTime / (decimal)server.servedCustomers;
+                server.IdleProbability = (clock - server.TotalWorkingTime) / (decimal)clock;
+            }
+
         }
 
 
